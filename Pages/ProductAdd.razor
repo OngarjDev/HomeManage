@@ -1,0 +1,25 @@
+﻿@page "/ProductAdd"
+@using InsureManage.Models;
+<h3>เพิ่มข้อมูลสินค้าในบ้านทั้งหมด</h3>
+<EditForm Model="@product" OnSubmit="@SendToDatabase">
+    <label for="nameproduct">ชื่อสินค้า</label>
+    <InputText id="nameproduct" @bind-Value="product.NameProduct" />
+
+    <label for="DateBuyProduct">วันที่ซื้อ</label>
+    <InputDate id="DateBuyProduct" @bind-Value="product.DateBuyProduct" />
+
+    <label for="DateEndInsureProduct">วันที่หมดประกัน</label>
+    <InputDate id="DateEndInsureProduct" @bind-Value="product.DateEndInsureProduct" />
+
+    <label for="nameproduct">หมายเหตุ(เช่น เก็บซิลิโคน ที่ต่อGoPro)</label>
+    <InputText id="note" @bind-Value="product.NoteProduct" />
+
+    <button type="submit">Submit</button>
+</EditForm>
+@code {
+    private Product product { get; set; }
+    private void SendToDatabase()
+    {
+        
+    }
+}

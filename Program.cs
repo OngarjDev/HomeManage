@@ -1,26 +1,29 @@
 using InsureManage.Areas.Identity;
-using InsureManage.Data;
-using Microsoft.AspNetCore.Components;
+using InsureManage.Interfaces;
+using InsureManage.Models;
+using InsureManage.Services;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// สำหรับการยืนยันตัวตนกับฐานข้อมูล
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// สำหรับการดึงข้อมูลสินค้ากับฐานข้อมูล
+builder.Services.AddDbContext<InsureManageContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-builder.Services.AddSingleton<WeatherForecastService>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

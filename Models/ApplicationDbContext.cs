@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace InsureManage.Data
+namespace InsureManage.Models
 {
     public class ApplicationDbContext : IdentityDbContext
     {

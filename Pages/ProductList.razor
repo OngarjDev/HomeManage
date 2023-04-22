@@ -1,0 +1,16 @@
+﻿@page "/Product"
+@using InsureManage.Models;
+
+<h3>สินค้าทั้งหมดที่ลงทะเบียน</h3>
+<input class="" type="search" @bind="KeywordSearch"/>
+<button class="btn btn-info">ค้นหาทั้งหมด</button>
+@code {
+    private string KeywordSearch { get; set; }
+    private Product product { get; set; }
+
+    //[JSInvokable]
+    //public Task Search()
+    //{
+        
+    //}
+}
