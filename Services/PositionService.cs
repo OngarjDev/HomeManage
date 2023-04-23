@@ -20,9 +20,9 @@ namespace InsureManage.Services
             return await Task.FromResult(true);
         }
 
-        public Task<List<Position>> GetAllPositionAsync()
+        public async Task<List<Position>> GetAllPositionAsync()
         {
-            return _db.Positions.ToListAsync();
+            return await _db.Positions.ToListAsync();
         }
 
         public async Task<List<Position>> GetByIdPositionAsync(int IdPositio)

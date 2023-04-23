@@ -2,14 +2,14 @@
 @using InsureManage.Interfaces;
 @page "/PositionAdd"
 <h3>เพิ่มที่เก็บสินค้า</h3>
-@if (string.IsNullOrEmpty(Message))
+@if (!string.IsNullOrEmpty(Message))
 {
-    @Message
+    <p class="text-success">@Message</p>
 }
 <EditForm Model="@position" OnValidSubmit="@SavePostionToDatabase">
-    <label for="NamePosition">ชื่อที่เก็บสินค้าในบ้าน</label>
-    <InputText id="NamePosition" @bind-Value="position.NamePosition" />
-    <button type="submit">บันทึกข้อมูล</button>
+    <label class="p-1" for="NamePosition">ชื่อที่เก็บสินค้าในบ้าน</label><br />
+    <InputText class="mb-3 w-100" id="NamePosition" @bind-Value="position.NamePosition" /><br />
+    <button class="w-100 btn btn-info" type="submit">บันทึกข้อมูล</button>
 </EditForm>
 @code {
     [Inject]
