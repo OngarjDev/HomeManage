@@ -4,6 +4,7 @@ using InsureManage.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace InsureManage.Migrations
 {
     [DbContext(typeof(InsureManageContext))]
-    partial class InsureManageContextModelSnapshot : ModelSnapshot
+    [Migration("20230423005125_UpdateModelProduct")]
+    partial class UpdateModelProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,20 +236,11 @@ namespace InsureManage.Migrations
                         .HasColumnType("varchar(max)")
                         .HasColumnName("Name_Position");
 
-                    b.HasKey("IdPosition");
-
                     b.ToTable("Position", (string)null);
                 });
 
             modelBuilder.Entity("InsureManage.Models.Product", b =>
                 {
-                    b.Property<int>("IdProduct")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("Id_Product");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdProduct"), 1L, 1);
-
                     b.Property<DateTime?>("DateBuyProduct")
                         .IsUnicode(false)
                         .HasColumnType("datetime2")
@@ -257,6 +250,13 @@ namespace InsureManage.Migrations
                         .IsUnicode(false)
                         .HasColumnType("datetime2")
                         .HasColumnName("DateEndInsure_Product");
+
+                    b.Property<int>("IdProduct")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("Id_Product");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdProduct"), 1L, 1);
 
                     b.Property<string>("NameProduct")
                         .IsRequired()
@@ -272,8 +272,6 @@ namespace InsureManage.Migrations
                     b.Property<int>("PositionProduct")
                         .HasColumnType("int")
                         .HasColumnName("Position_Product");
-
-                    b.HasKey("IdProduct");
 
                     b.ToTable("Product", (string)null);
                 });

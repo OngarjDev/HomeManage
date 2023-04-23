@@ -21,6 +21,7 @@ builder.Services.AddDbContext<InsureManageContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IProduct, ProductService>();
+builder.Services.AddScoped<IPosition, PositionService>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();

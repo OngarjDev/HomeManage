@@ -1,0 +1,25 @@
+﻿@using InsureManage.Models;
+@using InsureManage.Interfaces;
+@page "/PositionAdd"
+<h3>เพิ่มที่เก็บสินค้า</h3>
+@if (string.IsNullOrEmpty(Message))
+{
+    @Message
+}
+<EditForm Model="@position" OnValidSubmit="@SavePostionToDatabase">
+    <label for="NamePosition">ชื่อที่เก็บสินค้าในบ้าน</label>
+    <InputText id="NamePosition" @bind-Value="position.NamePosition" />
+    <button type="submit">บันทึกข้อมูล</button>
+</EditForm>
+@code {
+    [Inject]
+    protected IPosition PositionService { get; set; }
+    private Position position { get; set; } = new Position();
+    private string Message { get; set; } = null;
+    private async Task SavePostionToDatabase()
+    {
+        bool succeed = await PositionService.AddPositionAsync(position);
+        if (succeed) Message = "ข้อมูลถูกบันทึกสำเร็จแล้ว";
+        else Message = "ข้อมูลบันทึกไม่สำเร็จ";
+    }
+}

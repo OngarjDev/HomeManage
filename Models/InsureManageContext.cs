@@ -123,9 +123,10 @@ namespace InsureManage.Models
 
             modelBuilder.Entity<Position>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("Position");
+
+                entity.HasKey(e => e.IdPosition);
 
                 entity.Property(e => e.IdPosition)
                     .ValueGeneratedOnAdd()
@@ -138,9 +139,10 @@ namespace InsureManage.Models
 
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("Product");
+
+                entity.HasKey(e => e.IdProduct);
 
                 entity.Property(e => e.DateBuyProduct)
                     .IsUnicode(false)
