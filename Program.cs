@@ -22,7 +22,7 @@ builder.Services.AddDbContext<InsureManageContext>(options =>
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IProduct, ProductService>();
-builder.Services.AddScoped<IPosition, PositionService>();
+builder.Services.AddScoped<ILocationitem, LocationItemService>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();

@@ -4,37 +4,37 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InsureManage.Services
 {
-    public class PositionService : IPosition
+    public class LocationItemService : ILocationitem
     {
         private readonly InsureManageContext _db;
-        private readonly ILogger<PositionService> _logger;
-        public PositionService(InsureManageContext db, ILogger<PositionService> logger)
+        private readonly ILogger<LocationItemService> _logger;
+        public LocationItemService(InsureManageContext db, ILogger<LocationItemService> logger)
         {
             _db = db;
             _logger = logger;
         }
-        public async Task<bool> AddPositionAsync(Position position)
+        public async Task<bool> AddPositionAsync(LocationItem position)
         {
-            _db.Positions.Add(position);
+            _db.LocationItems.Add(position);
             await _db.SaveChangesAsync();
             return await Task.FromResult(true);
         }
 
-        public async Task<List<Position>> GetAllPositionAsync()
+        public async Task<List<LocationItem>> GetAllPositionAsync()
         {
-            return await _db.Positions.ToListAsync();
+            return await _db.LocationItems.ToListAsync();
         }
 
-        public async Task<List<Position>> GetByIdPositionAsync(int IdPositio)
+        public async Task<List<LocationItem>> GetByIdPositionAsync(int IdPosition)
         {
-            return await _db.Positions.Where(x => x.IdPosition == IdPositio).ToListAsync();
+            return await _db.LocationItems.Where(x => x.IdLocationItem == IdPosition).ToListAsync();
         }
 
-        public async Task<bool> MovePositionAsync(Position position)
+        public async Task<bool> MovePositionAsync(LocationItem position)
         {
             try
             {
-                _db.Positions.Update(position);
+                _db.LocationItems.Update(position);
                 await _db.SaveChangesAsync();
                 return await Task.FromResult(true);
             }
@@ -49,16 +49,16 @@ namespace InsureManage.Services
         {
             try
             {
-                var product = await _db.Positions.FindAsync(IdPosition);
+                var product = await _db.LocationItems.FindAsync(IdPosition);
                 if (product != null)
                 {
-                    _db.Positions.Remove(product);
+                    _db.LocationItems.Remove(product);
                     await _db.SaveChangesAsync();
                     return true;
                 }
                 else
                 {
-                    _logger.LogInformation("Position Not Found.");
+                    _logger.LogInformation("LocationItem Not Found.");
                     return false;
                 }
             }

@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace InsureManage.Models
 {
@@ -19,7 +22,7 @@ namespace InsureManage.Models
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; } = null!;
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; } = null!;
         public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; } = null!;
-        public virtual DbSet<Position> Positions { get; set; } = null!;
+        public virtual DbSet<LocationItem> LocationItems { get; set; } = null!;
         public virtual DbSet<Product> Products { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -121,40 +124,31 @@ namespace InsureManage.Models
                     .HasForeignKey(d => d.UserId);
             });
 
-            modelBuilder.Entity<Position>(entity =>
+            modelBuilder.Entity<LocationItem>(entity =>
             {
+                entity.HasKey(e => e.IdLocationItem)
+                    .HasName("PK_Position");
 
-                entity.ToTable("Position");
+                entity.ToTable("LocationItem");
 
-                entity.HasKey(e => e.IdPosition);
+                entity.Property(e => e.IdLocationItem).HasColumnName("Id_LocationItem");
 
-                entity.Property(e => e.IdPosition)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("Id_Position");
-
-                entity.Property(e => e.NamePosition)
+                entity.Property(e => e.NameLocationItem)
                     .IsUnicode(false)
-                    .HasColumnName("Name_Position");
+                    .HasColumnName("Name_LocationItem");
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.HasKey(e => e.IdProduct);
 
                 entity.ToTable("Product");
 
-                entity.HasKey(e => e.IdProduct);
+                entity.Property(e => e.IdProduct).HasColumnName("Id_Product");
 
-                entity.Property(e => e.DateBuyProduct)
-                    .IsUnicode(false)
-                    .HasColumnName("DateBuy_Product");
+                entity.Property(e => e.DateBuyProduct).HasColumnName("DateBuy_Product");
 
-                entity.Property(e => e.DateEndInsureProduct)
-                    .IsUnicode(false)
-                    .HasColumnName("DateEndInsure_Product");
-
-                entity.Property(e => e.IdProduct)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("Id_Product");
+                entity.Property(e => e.DateEndInsureProduct).HasColumnName("DateEndInsure_Product");
 
                 entity.Property(e => e.NameProduct)
                     .IsUnicode(false)

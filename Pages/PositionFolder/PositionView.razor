@@ -1,20 +1,20 @@
-﻿@page "/Position"
+﻿@page "/LocationItem"
 @using InsureManage.Interfaces;
 @using InsureManage.Models;
 @inject NavigationManager Navigation
 <h3>PositionView</h3>
 <button @onclick="@(()=> Navigation.NavigateTo("/PositionAdd"))">เพิ่มตำแหน่งที่เก็บของ</button>
-<CascadingValue Value="@Position" Name="PositionContent">
+<CascadingValue Value="@LocationItem" Name="PositionContent">
     <TableShowShareComponent />
 </CascadingValue>
 
 @code {
     [Inject]
-    protected IPosition PositionService { get; set; }
-    private List<Position> Position { get; set; } = new List<Position>();
+    protected ILocationitem PositionService { get; set; }
+    private List<LocationItem> LocationItem { get; set; } = new List<LocationItem>();
 
     protected override async Task OnInitializedAsync()
     {
-        Position = await PositionService.GetAllPositionAsync();
+        LocationItem = await PositionService.GetAllPositionAsync();
     }
 }

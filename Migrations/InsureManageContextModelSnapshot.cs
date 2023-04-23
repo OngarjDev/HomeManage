@@ -219,24 +219,24 @@ namespace InsureManage.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("InsureManage.Models.Position", b =>
+            modelBuilder.Entity("InsureManage.Models.LocationItem", b =>
                 {
-                    b.Property<int>("IdPosition")
+                    b.Property<int>("IdLocationItem")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("Id_Position");
+                        .HasColumnName("Id_LocationItem");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdPosition"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdLocationItem"), 1L, 1);
 
-                    b.Property<string>("NamePosition")
+                    b.Property<string>("NameLocationItem")
                         .IsRequired()
                         .IsUnicode(false)
                         .HasColumnType("varchar(max)")
-                        .HasColumnName("Name_Position");
+                        .HasColumnName("Name_LocationItem");
 
-                    b.HasKey("IdPosition");
+                    b.HasKey("IdLocationItem");
 
-                    b.ToTable("Position", (string)null);
+                    b.ToTable("LocationItem", (string)null);
                 });
 
             modelBuilder.Entity("InsureManage.Models.Product", b =>

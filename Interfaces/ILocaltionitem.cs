@@ -2,25 +2,25 @@
 
 namespace InsureManage.Interfaces
 {
-    public interface IPosition
+    public interface ILocationitem
     {
         /// <summary>
         /// ค้นหาตำแหน่งที่ตั้งแบบเฉพาะเจาะจง
         /// </summary>
-        /// <param name="IdPositio">ใส่ข้อมูลข้อมูล Id ที่ต้องการค้นหา</param>
+        /// <param name="IdPosition">ใส่ข้อมูลข้อมูล Id ที่ต้องการค้นหา</param>
         /// <returns>หากทำสำเร็จจะเป็น True หากทำไม่สำเร็จจะเป็น False</returns>
-        Task<List<Position>> GetByIdPositionAsync(int IdPositio);
+        Task<List<LocationItem>> GetByIdPositionAsync(int IdPosition);
         /// <summary>
         /// ดึงตำแหน่งที่เก็บของภายในบ้านทั้งหมด
         /// </summary>
         /// <returns>ให้ข้อมูลตำแหน่งทั้งหมดเป็น List </returns>
-        Task<List<Position>> GetAllPositionAsync();
+        Task<List<LocationItem>> GetAllPositionAsync();
         /// <summary>
         /// เพิ่มข้อมูลลงในฐานข้อมูล
         /// </summary>
         /// <param name="position">ใส่ข้อมูลทั้งหมดที่ต้องการเพิ่ม</param>
         /// <returns>หากทำสำเร็จจะเป็น True หากทำไม่สำเร็จจะเป็น False</returns>
-        Task<bool> AddPositionAsync(Position position);
+        Task<bool> AddPositionAsync(LocationItem position);
         /// <summary>
         /// ลบตำแหน่งที่เก็บของ
         /// </summary>
@@ -32,6 +32,6 @@ namespace InsureManage.Interfaces
         /// </summary>
         /// <param name="position">ข้อมูลใหม่ที่จะ อัพเดตลงในฐานข้อมูล</param>
         /// <returns>หากทำสำเร็จจะเป็น True หากทำไม่สำเร็จจะเป็น False</returns>
-        Task<bool> MovePositionAsync(Position position);
+        Task<bool> MovePositionAsync(LocationItem position);
     }
 }

@@ -221,7 +221,7 @@ namespace InsureManage.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("InsureManage.Models.Position", b =>
+            modelBuilder.Entity("InsureManage.Models.LocationItem", b =>
                 {
                     b.Property<int>("IdPosition")
                         .ValueGeneratedOnAdd()
@@ -236,7 +236,7 @@ namespace InsureManage.Migrations
                         .HasColumnType("varchar(max)")
                         .HasColumnName("Name_Position");
 
-                    b.ToTable("Position", (string)null);
+                    b.ToTable("LocationItem", (string)null);
                 });
 
             modelBuilder.Entity("InsureManage.Models.Product", b =>

@@ -6,19 +6,19 @@
 {
     <p class="text-success">@Message</p>
 }
-<EditForm Model="@position" OnValidSubmit="@SavePostionToDatabase">
+<EditForm Model="@LocationItem" OnValidSubmit="@SavePostionToDatabase">
     <label class="p-1" for="NamePosition">ชื่อที่เก็บสินค้าในบ้าน</label><br />
-    <InputText class="mb-3 w-100" id="NamePosition" @bind-Value="position.NamePosition" /><br />
+    <InputText class="mb-3 w-100" id="NamePosition" @bind-Value="LocationItem.NameLocationItem" /><br />
     <button class="w-100 btn btn-info" type="submit">บันทึกข้อมูล</button>
 </EditForm>
 @code {
     [Inject]
-    protected IPosition PositionService { get; set; }
-    private Position position { get; set; } = new Position();
+    protected ILocationitem PositionService { get; set; }
+    private LocationItem LocationItem { get; set; } = new LocationItem();
     private string Message { get; set; } = null;
     private async Task SavePostionToDatabase()
     {
-        bool succeed = await PositionService.AddPositionAsync(position);
+        bool succeed = await PositionService.AddPositionAsync(LocationItem);
         if (succeed) Message = "ข้อมูลถูกบันทึกสำเร็จแล้ว";
         else Message = "ข้อมูลบันทึกไม่สำเร็จ";
     }

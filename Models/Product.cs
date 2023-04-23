@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace InsureManage.Models
+﻿namespace InsureManage.Models
 {
     public partial class Product
     {
-        [Key]
         public int IdProduct { get; set; }
         public string NameProduct { get; set; } = null!;
         public int PositionProduct { get; set; }
