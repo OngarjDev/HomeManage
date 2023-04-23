@@ -2,9 +2,9 @@
 @using InsureManage.Interfaces;
 @page "/PositionAdd"
 <h3>เพิ่มที่เก็บสินค้า</h3>
-@if (!string.IsNullOrEmpty(Message))
+@if (string.IsNullOrEmpty(Message))
 {
-    <p class="text-success">@Message</p>
+    @Message
 }
 <EditForm Model="@LocationItem" OnValidSubmit="@SavePostionToDatabase">
     <label class="p-1" for="NamePosition">ชื่อที่เก็บสินค้าในบ้าน</label><br />

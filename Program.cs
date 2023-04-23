@@ -1,4 +1,3 @@
-using BlazorBootstrap;
 using InsureManage.Areas.Identity;
 using InsureManage.Interfaces;
 using InsureManage.Models;
@@ -19,7 +18,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 // สำหรับการดึงข้อมูลสินค้ากับฐานข้อมูล
 builder.Services.AddDbContext<InsureManageContext>(options =>
     options.UseSqlServer(connectionString));
-builder.Services.AddBlazorBootstrap();
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddScoped<IProduct, ProductService>();
 builder.Services.AddScoped<ILocationitem, LocationItemService>();

@@ -1,8 +1,4 @@
-﻿using InsureManage.Interfaces;
-using InsureManage.Models;
-using Microsoft.EntityFrameworkCore;
-
-namespace InsureManage.Services
+﻿namespace InsureManage.Services
 {
     public class LocationItemService : ILocationitem
     {
