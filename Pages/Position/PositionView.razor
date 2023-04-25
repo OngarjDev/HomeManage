@@ -3,12 +3,13 @@
 @using InsureManage.Models;
 @inject NavigationManager Navigation
 <h3>จัดการตำแหน่งที่เก็บของทั้งหมด</h3>
-<input type="search" @bind="KeywordSearch" @oninput="SearchLocationItem" />
+<input class="border border-warning border-2 rounded p-3 w-25" type="search" placeholder="ค้นหา : เลขไอดี ชื่อตำแหน่งที่เก็บของ" @bind-value="KeywordSearch" style="height:35px" />
+<button class="btn btn-primary text-white" @onclick="SearchLocationItem">ค้นหาตำแหน่งที่เก็บ</button>
 <button class="btn btn-success" @onclick="@(()=> Navigation.NavigateTo("/PositionAdd"))">เพิ่มตำแหน่งที่เก็บของ</button>
-<div class="mt-3 text-center">
-<CascadingValue Value="@Locationitem" Name="PositionContent">
-        <TablePositionComponent/>
-</CascadingValue>
+<div class="mt-3">
+    <CascadingValue Value="@Locationitem" Name="PositionContent">
+        <TablePositionComponent DataIsUpdate="@UpdateDataNew" />
+    </CascadingValue>
 </div>
 @code {
     [Inject]
@@ -23,5 +24,13 @@
     private async Task SearchLocationItem()
     {
         Locationitem = await LocationitemService.SearchLocationitemAsync(KeywordSearch);
-    } 
+    }
+    private async Task UpdateDataNew(bool status)
+    {
+        if (status == true)
+        {
+            Locationitem = await LocationitemService.GetAllPositionAsync();
+            status = false;
+        }
+    }
 }

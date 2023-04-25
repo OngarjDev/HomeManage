@@ -1,8 +1,10 @@
 ﻿@using InsureManage.Interfaces;
 @using InsureManage.Models;
 @inject NavigationManager Navigation
-
-<table class="table table-info table-striped">
+@if(Message != null){
+    <p class="text-left mb-1">ข้อความแจ้งสถานะ : @Message</p>
+}
+<table class="table table-info table-striped text-center">
     <thead>
         <tr class="table-primary fs-4">
             <th>ไอดี</th>
@@ -27,7 +29,8 @@
     </tbody>
 </table>
 @code {
-
+    [Parameter]
+    public EventCallback<bool> DataIsUpdate { get; set; }
 
     [CascadingParameter(Name = "PositionContent")]
     private List<LocationItem> LocationItem { get; set; } = null!;
@@ -35,9 +38,13 @@
     [Inject]
     protected ILocationitem LocationitemService { get; set; }
 
+    private string Message { get; set; } = null;
+
     private async Task DeleteData(int id)
     {
         bool status;
         status = await LocationitemService.RemovePositionAsync(id);
+        if (status == true) { await DataIsUpdate.InvokeAsync(true); Message = "ตำแหน่งที่ตั้งถูกลบเรียบร้อยแล้ว"; }
+        else { Message = "เกิดข้อผิดพลาดไม่สามารถลบได้"; }
     }
 }
