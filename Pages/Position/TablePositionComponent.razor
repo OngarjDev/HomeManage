@@ -1,0 +1,43 @@
+﻿@using InsureManage.Interfaces;
+@using InsureManage.Models;
+@inject NavigationManager Navigation
+
+<table class="table table-info table-striped">
+    <thead>
+        <tr class="table-primary fs-4">
+            <th>ไอดี</th>
+            <th>ชื่อตำแหน่งที่เก็บของ</th>
+            <th>จัดการ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in LocationItem)
+        {
+            <tr class="fs-5">
+                <td>@v.IdLocationItem</td>
+                <td>@v.NameLocationItem</td>
+                <td>
+                    <div class="btn-group w-100" role="group" aria-label="Basic mixed styles example">
+                        <button type="button" class="btn btn-warning" @onclick='@(() => Navigation.NavigateTo("/Position/Update/"+ v.IdLocationItem))'>แก้ไข</button>
+                        <button type="button" class="btn btn-danger" @onclick='@(async () => await DeleteData(v.IdLocationItem))'>ลบ</button>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+
+
+    [CascadingParameter(Name = "PositionContent")]
+    private List<LocationItem> LocationItem { get; set; } = null!;
+
+    [Inject]
+    protected ILocationitem LocationitemService { get; set; }
+
+    private async Task DeleteData(int id)
+    {
+        bool status;
+        status = await LocationitemService.RemovePositionAsync(id);
+    }
+}

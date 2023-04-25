@@ -1,7 +1,27 @@
 ﻿@page "/Position"
+@using InsureManage.Interfaces;
+@using InsureManage.Models;
 @inject NavigationManager Navigation
-<h3>PositionView</h3>
-<button @onclick="@(()=> Navigation.NavigateTo("/PositionAdd"))">เพิ่มตำแหน่งที่เก็บของ</button>
+<h3>จัดการตำแหน่งที่เก็บของทั้งหมด</h3>
+<input type="search" @bind="KeywordSearch" @oninput="SearchLocationItem" />
+<button class="btn btn-success" @onclick="@(()=> Navigation.NavigateTo("/PositionAdd"))">เพิ่มตำแหน่งที่เก็บของ</button>
+<div class="mt-3 text-center">
+<CascadingValue Value="@Locationitem" Name="PositionContent">
+        <TablePositionComponent/>
+</CascadingValue>
+</div>
 @code {
+    [Inject]
+    protected ILocationitem LocationitemService { get; set; }
+    private List<LocationItem> Locationitem { get; set; } = new List<LocationItem>();
+    private String KeywordSearch { get; set; } = null;
+    protected override async Task OnInitializedAsync()
+    {
+        Locationitem = await LocationitemService.GetAllPositionAsync();
+    }
 
+    private async Task SearchLocationItem()
+    {
+        Locationitem = await LocationitemService.SearchLocationitemAsync(KeywordSearch);
+    } 
 }

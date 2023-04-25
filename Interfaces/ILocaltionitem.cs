@@ -9,7 +9,7 @@ namespace InsureManage.Interfaces
         /// </summary>
         /// <param name="IdPosition">ใส่ข้อมูลข้อมูล Id ที่ต้องการค้นหา</param>
         /// <returns>หากทำสำเร็จจะเป็น True หากทำไม่สำเร็จจะเป็น False</returns>
-        Task<List<LocationItem>> GetByIdPositionAsync(int IdPosition);
+        Task<LocationItem?> GetByIdPositionAsync(int IdPosition);
         /// <summary>
         /// ดึงตำแหน่งที่เก็บของภายในบ้านทั้งหมด
         /// </summary>
@@ -33,5 +33,11 @@ namespace InsureManage.Interfaces
         /// <param name="position">ข้อมูลใหม่ที่จะ อัพเดตลงในฐานข้อมูล</param>
         /// <returns>หากทำสำเร็จจะเป็น True หากทำไม่สำเร็จจะเป็น False</returns>
         Task<bool> MovePositionAsync(LocationItem position);
+        /// <summary>
+        /// ค้นหา LocationItem ที่เกี่ยวข้องทั้งหมด
+        /// </summary>
+        /// <param name="locationItem">ต้องการข้อมูลที่เกี่ยวข้องทั้งหมดแล้ว เก็บเข้าไปในObj</param>
+        /// <returns>ข้อมูลที่เกี่ยวข้องทั้งหมด</returns>
+        Task<List<LocationItem>> SearchLocationitemAsync(String locationItem);
     }
 }

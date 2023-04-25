@@ -1,4 +1,8 @@
-﻿namespace InsureManage.Services
+﻿using InsureManage.Interfaces;
+using InsureManage.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace InsureManage.Services
 {
     public class LocationItemService : ILocationitem
     {
@@ -21,9 +25,9 @@
             return await _db.LocationItems.ToListAsync();
         }
 
-        public async Task<List<LocationItem>> GetByIdPositionAsync(int IdPosition)
+        public async Task<LocationItem?> GetByIdPositionAsync(int IdPosition)
         {
-            return await _db.LocationItems.Where(x => x.IdLocationItem == IdPosition).ToListAsync();
+            return await _db.LocationItems.Where(x => x.IdLocationItem == IdPosition).FirstOrDefaultAsync() ?? null;
         }
 
         public async Task<bool> MovePositionAsync(LocationItem position)
@@ -63,6 +67,15 @@
                 _logger.LogError(ex, "Error RemovePosition To Database");
                 return false;
             }
+        }
+
+        public async Task<List<LocationItem>> SearchLocationitemAsync(String KeyWordSearch)
+        {
+            int.TryParse(KeyWordSearch, out int IdPosition);
+            return await _db.LocationItems.Where(p =>
+            p.IdLocationItem == IdPosition ||
+            p.NameLocationItem.Contains(KeyWordSearch)
+            ).ToListAsync();
         }
     }
 }
