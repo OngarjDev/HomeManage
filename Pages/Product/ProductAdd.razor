@@ -1,7 +1,14 @@
 ﻿@page "/ProductAdd"
 @using InsureManage.Interfaces;
 @using InsureManage.Models;
+@inject NavigationManager Navigation
+
+<a class="mb-4 text-decoration-none" href="/Product">กลับไปยังหน้าเดิม</a>
 <h3>เพิ่มข้อมูลสินค้าในบ้านทั้งหมด</h3>
+@if (!string.IsNullOrEmpty(Message))
+{
+    <p class="text-success">@Message</p>
+}
 <EditForm Model="@product" OnValidSubmit="@SendToDatabase" class="form-control p-3">
     <label class="form-label" for="nameproduct">ชื่อสินค้า</label>
     <InputText class="form-control" id="nameproduct" @bind-Value="product.NameProduct" />
@@ -42,9 +49,13 @@
 
     private Product product { get; set; } = new Product();
     private List<LocationItem> LocationItem { get; set; } = new List<LocationItem>();
+
+    private String Message { get; set; } = null;
     private async Task SendToDatabase()
     {
         bool status = await ProductService.AddProduct(product);
+        if (status == true) Message = "ข้อมูลของท่านถูกเพิ่มเรียบร้อยแล้ว";
+        else Message = "การเพิ่มข้อมูลพบข้อผิดพลาดในระบบโปรดติดต่อผู้ดูแล";
     }
     protected async override Task OnInitializedAsync()
     {
