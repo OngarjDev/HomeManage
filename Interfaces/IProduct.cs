@@ -30,8 +30,8 @@ namespace InsureManage.Interfaces
         /// <summary>
         /// ค้นหาข้อมูลที่เกี่ยวข้องทั้งหมดแล้วส่งข้อมูลที่เกี่ยวข้องกลับมา
         /// </summary>
-        /// <param name="product">รับ Product ที่มีข้อมูลที่เกี่ยวข้องเพื่อค้นหา</param>
+        /// <param name="KeywordSearch">รับ KeywordSearch ที่มีข้อมูลที่เกี่ยวข้องเพื่อค้นหา</param>
         /// <returns>ส่งข้อมูลที่มีความเกี่ยวข้องทั้งหมด</returns>
-        Task<List<Product>> SearchProduct(Product product);
+        Task<List<Product>> SearchProduct(string KeywordSearch);
     }
 }

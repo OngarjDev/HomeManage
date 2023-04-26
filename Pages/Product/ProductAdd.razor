@@ -1,25 +1,53 @@
 ﻿@page "/ProductAdd"
+@using InsureManage.Interfaces;
 @using InsureManage.Models;
 <h3>เพิ่มข้อมูลสินค้าในบ้านทั้งหมด</h3>
-<EditForm Model="@product" OnSubmit="@SendToDatabase">
-    <label for="nameproduct">ชื่อสินค้า</label>
-    <InputText id="nameproduct" @bind-Value="product.NameProduct" />
+<EditForm Model="@product" OnValidSubmit="@SendToDatabase" class="form-control p-3">
+    <label class="form-label" for="nameproduct">ชื่อสินค้า</label>
+    <InputText class="form-control" id="nameproduct" @bind-Value="product.NameProduct" />
 
-    <label for="DateBuyProduct">วันที่ซื้อ</label>
-    <InputDate id="DateBuyProduct" @bind-Value="product.DateBuyProduct" />
+    <label class="form-label mt-1" for="nameproduct">ตำแหน่งที่จัดเก็บของ</label>
+    <InputSelect class="form-control" @bind-Value="product.PositionProduct">
+        <option value="" selected>
+            โปรดเลือกหัวข้อย่อย
+        </option>
+        @if (LocationItem != null)
+        {
+            @foreach (var p in LocationItem)
+            {
+                <option value="@p.IdLocationItem">
+                    @p.NameLocationItem
+                </option>
+            }
+        }
+    </InputSelect>
+    <div class="input-group mt-3">
+    <label class="form-label mt-1" for="DateBuyProduct">วันที่ซื้อ</label>
+    <InputDate class="form-control mx-3" id="DateBuyProduct" @bind-Value="product.DateBuyProduct" />
 
-    <label for="DateEndInsureProduct">วันที่หมดประกัน</label>
-    <InputDate id="DateEndInsureProduct" @bind-Value="product.DateEndInsureProduct" />
+    <label class="form-label mt-2" for="DateEndInsureProduct">วันที่หมดประกัน</label>
+    <InputDate class="form-control ms-3" id="DateEndInsureProduct" @bind-Value="product.DateEndInsureProduct" />
+    </div>
 
-    <label for="nameproduct">หมายเหตุ(เช่น เก็บซิลิโคน ที่ต่อGoPro)</label>
-    <InputText id="note" @bind-Value="product.NoteProduct" />
+    <label class="form-label mt-1" for="nameproduct">หมายเหตุ(เช่น เก็บซิลิโคน ที่ต่อGoPro)</label>
+    <InputTextArea class="form-control" id="note" @bind-Value="product.NoteProduct" />
 
-    <button type="submit">Submit</button>
+    <button class="mt-2 btn btn-primary w-100" type="submit">ยืนยันเพิ่มข้อมูล</button>
 </EditForm>
 @code {
-    private Product product { get; set; }
-    private void SendToDatabase()
+    [Inject]
+    protected IProduct ProductService { get; set; }
+    [Inject]
+    protected ILocationitem LocationitemService { get; set; }
+
+    private Product product { get; set; } = new Product();
+    private List<LocationItem> LocationItem { get; set; } = new List<LocationItem>();
+    private async Task SendToDatabase()
     {
-        
+        bool status = await ProductService.AddProduct(product);
+    }
+    protected async override Task OnInitializedAsync()
+    {
+        LocationItem = await LocationitemService.GetAllPositionAsync();
     }
 }

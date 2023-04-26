@@ -17,7 +17,7 @@ namespace InsureManage.Services
         {
             try
             {
-                _db.Add(product);
+                _db.Products.Add(product);
                 await _db.SaveChangesAsync();
                 return true;
             }
@@ -72,11 +72,16 @@ namespace InsureManage.Services
             }
         }
 
-        public async Task<List<Product>> SearchProduct(Product product)
+        public async Task<List<Product>> SearchProduct(string KeywordSearch)
         {
+            int.TryParse(KeywordSearch, out int IdPosition);
+            DateTime.TryParse(KeywordSearch, out DateTime DatePosition);
             return await _db.Products.Where(p =>
-            p.NameProduct.Contains(product.NameProduct
-            )).ToListAsync();
+            p.IdProduct == IdPosition ||
+            p.NameProduct.Contains(KeywordSearch) ||
+            p.DateBuyProduct == DatePosition ||
+            p.DateEndInsureProduct == DatePosition
+            ).ToListAsync();
         }
     }
 }
