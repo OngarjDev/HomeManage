@@ -2,7 +2,9 @@
 @using InsureManage.Models;
 @inject NavigationManager Navigation
 @if(Message != null){
+    <Callout>
     <p class="text-left mb-1">ข้อความแจ้งสถานะ : @Message</p>
+    </Callout>
 }
 <table class="table table-info table-striped text-center">
     <thead>

@@ -27,7 +27,7 @@ namespace InsureManage.Services
 
         public async Task<LocationItem?> GetByIdPositionAsync(int IdPosition)
         {
-            return await _db.LocationItems.Where(x => x.IdLocationItem == IdPosition).FirstOrDefaultAsync() ?? null;
+            return await _db.LocationItems.FirstOrDefaultAsync(p => p.IdLocationItem == IdPosition) ?? null;
         }
 
         public async Task<bool> MovePositionAsync(LocationItem position)

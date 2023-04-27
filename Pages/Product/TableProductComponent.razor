@@ -3,7 +3,9 @@
 @inject NavigationManager Navigation
 @if (Message != null)
 {
-    <p class="text-left mb-1">ข้อความแจ้งสถานะ : @Message</p>
+    <Callout>
+    <h5 class="text-left mb-1 ds">ข้อความแจ้งสถานะ : @Message</h5>
+    </Callout>
 }
 <table class="table table-info table-striped text-center">
     <thead>

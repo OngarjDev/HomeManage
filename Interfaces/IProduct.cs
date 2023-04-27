@@ -33,5 +33,11 @@ namespace InsureManage.Interfaces
         /// </summary>
         /// <returns>ข้อมูลที่เกียวข้องกับ Product และ Locationitem ทั้งหมด</returns>
         Task<IEnumerable<ProductLocationItemInnerJoin>> JoinLocationitemTableGetAll();
+        /// <summary>
+        /// ค้นหาProduct ด้วย Id 
+        /// </summary>
+        /// <param name="Id_Product">ส่ง Id_Product</param>
+        /// <returns>ส่งค่า Product ที่Id ตรงกัน</returns>
+        Task<Product?> GetProductById(int Id_Product);
     }
 }

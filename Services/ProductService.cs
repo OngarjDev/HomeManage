@@ -108,5 +108,10 @@ namespace InsureManage.Services
                         };
             return await query.ToListAsync();
         }
+
+        public async Task<Product?> GetProductById(int Id_Product)
+        {
+            return await _db.Products.FirstOrDefaultAsync(p => p.IdProduct == Id_Product) ?? null;
+        }
     }
 }

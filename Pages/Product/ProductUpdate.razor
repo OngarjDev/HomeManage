@@ -3,15 +3,41 @@
 @using InsureManage.Models;
 @inject NavigationManager Navigation
 
-<a class="mb-4 text-decoration-none" href="/Position">กลับไปยังหน้าเดิม</a>
+<a class="mb-4 text-decoration-none" href="/Product">กลับไปยังหน้าเดิม</a>
 <h3>แก้ไขเกี่ยวกับตำแหน่งที่เก็บของ</h3>
 @if (!string.IsNullOrEmpty(Message))
 {
     <p class="text-success">@Message</p>
 }
-<EditForm Model="@LocationItem" OnValidSubmit="@SavePostionToDatabase">
-    <label for="NameLocation">ชื่อที่เก็บตำแหน่งใหม่ (ชื่อเดิม : @LocationItem.NameLocationItem)</label>
-    <InputText class="w-100" @bind-Value="LocationItem.NameLocationItem" id="NameLocation" />
+<EditForm Model="@Product" OnValidSubmit="@SaveProductToDatabase" class="form-control p-3">
+    <label class="form-label" for="NameLocation">ชื่อสินค้า</label>
+    <InputText class="w-100 form-control" @bind-Value="Product.NameProduct" id="NameLocation" />
+
+    <label class="form-label" for="NameLocation">ชื่อตำแหน่งที่จัดเก็บ</label>
+    <InputSelect class="form-control" @bind-Value="Product.PositionProduct">
+        <option value="" selected>
+            โปรดเลือกหัวข้อย่อย
+        </option>
+        @if (Locationitem != null)
+        {
+            @foreach (var p in Locationitem)
+            {
+                <option value="@p.IdLocationItem">
+                    @p.NameLocationItem
+                </option>
+            }
+        }
+    </InputSelect>
+    <div class="input-group mt-3">
+        <label class="form-label mt-1" for="DateBuyProduct">วันที่ซื้อ</label>
+        <InputDate class="form-control mx-3" id="DateBuyProduct" @bind-Value="Product.DateBuyProduct" />
+
+        <label class="form-label mt-2" for="DateEndInsureProduct">วันที่หมดประกัน</label>
+        <InputDate class="form-control ms-3" id="DateEndInsureProduct" @bind-Value="Product.DateEndInsureProduct" />
+    </div>
+    <label class="form-label" for="NameLocation">หมายเหตุเกี่ยวกับสินค้า</label>
+    <InputTextArea class="w-100 form-control" @bind-Value="Product.NoteProduct" id="NameLocation" />
+
     <button class="w-100 btn btn-info mt-3" type="submit">บันทึกข้อมูล</button>
 </EditForm>
 @code {
@@ -19,18 +45,24 @@
     public int Id { get; set; }
 
     [Inject]
+    private IProduct ProductService { get; set; }
+    [Inject]
     private ILocationitem LocationitemService { get; set; }
-    private LocationItem LocationItem { get; set; } = new LocationItem();
+
+    private Product Product { get; set; } = new Product();
+    private List<LocationItem> Locationitem { get; set; } = new List<LocationItem>();
+
     private string Message { get; set; } = null;
 
     protected async override Task OnInitializedAsync()
     {
-        LocationItem = await LocationitemService.GetByIdPositionAsync(Id);
+        Product = await ProductService.GetProductById(Id) ?? null;
+        Locationitem = await LocationitemService.GetAllPositionAsync();
     }
 
-    private async Task SavePostionToDatabase()
+    private async Task SaveProductToDatabase()
     {
-        bool status = await LocationitemService.MovePositionAsync(LocationItem);
+        bool status = await ProductService.UpdateProduct(Product);
         if (status) Message = "ข้อมูลถูกบันทึกสำเร็จแล้ว";
         else Message = "ข้อมูลบันทึกไม่สำเร็จ";
     }
