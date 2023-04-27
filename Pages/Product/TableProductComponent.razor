@@ -1,50 +1,40 @@
 ﻿@using InsureManage.Interfaces;
 @using InsureManage.Models;
 @inject NavigationManager Navigation
-@if (Message != null)
-{
-    <Callout>
-    <h5 class="text-left mb-1 ds">ข้อความแจ้งสถานะ : @Message</h5>
-    </Callout>
-}
-<table class="table table-info table-striped text-center">
-    <thead>
-        <tr class="table-primary fs-4">
-            <th>ไอดี</th>
-            <th>ชื่อตำแหน่งที่เก็บของ</th>
-            <th>ชื่อที่จัดเก็บของ</th>
-            <th>วันที่ซื้อ</th>
-            <th>วันที่หมดประกัน</th>
-            <th>หมายเหตุ</th>
-            <th>จัดการ</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var v in Products)
-        {
-            <tr class="fs-5">
-                <td>@v.IdProduct</td>
-                <td>@v.NameProduct</td>
-                <td>@v.NameLocationItem</td>
-                <td>@v.DateBuyProduct</td>
-                <td>@v.DateEndProduct</td>
-                <td>@v.NoteProduct</td>
-                <td>
-                    <div class="btn-group w-100" role="group" aria-label="Basic mixed styles example">
-                        <button type="button" class="btn btn-warning" @onclick='@(() => Navigation.NavigateTo("/Product/Update/"+ v.IdProduct))'>แก้ไข</button>
-                        <button type="button" class="btn btn-danger" @onclick='@(async () => await DeleteData(v.IdProduct))'>ลบ</button>
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<Grid TItem="ProductLocationItemInnerJoin" class="table table-hover table-bordered table-striped text-center" DataProvider="ProductDataProvider" AllowFiltering="true" AllowPaging="true" PageSize="20" AllowSorting="true" Responsive="true" EmptyText="ขออภัย เราไม่พบข้อมูลที่ท่านต้องการ">
+    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="ไอดี" PropertyName="IdProduct" SortString="IdProduct" SortKeySelector="item => item.IdProduct" FilterTextboxWidth="50" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+        @context.IdProduct
+    </GridColumn>
+    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="ชื่อตำแหน่งที่เก็บของ" PropertyName="NameProduct" SortString="NameProduct" SortKeySelector="item => item.NameProduct" FilterTextboxWidth="100">
+        @context.NameProduct
+    </GridColumn>
+    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="ชื่อที่จัดเก็บของ" PropertyName="NameLocationItem" SortString="NameLocationItem" SortKeySelector="item => item.NameLocationItem" FilterTextboxWidth="120">
+        @context.NameLocationItem
+    </GridColumn>
+    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="วันที่ซื้อ" PropertyName="DateBuyProduct" SortString="DateBuyProduct" SortKeySelector="item => item.DateBuyProduct" FilterTextboxWidth="90">
+        @context.DateBuyProduct
+    </GridColumn>
+    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="วันที่หมดประกัน" PropertyName="DateEndProduct" SortString="DateEndProduct" SortKeySelector="item => item.DateEndProduct" FilterTextboxWidth="90">
+        @context.DateEndProduct
+    </GridColumn>
+    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="หมายเหตุสินค้า" PropertyName="NoteProduct" Filterable="false">
+        @context.NoteProduct
+    </GridColumn>
+    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="จัดการสินค้า" Filterable="false">
+        <div class="btn-group w-100" role="group" aria-label="Basic mixed styles example">
+            <button type="button" class="btn btn-warning w-50" @onclick='@(() => Navigation.NavigateTo("/Product/Update/"+ @context.IdProduct))'>แก้ไข</button>
+            <button type="button" class="btn btn-danger" @onclick='@(async () => await DeleteData(@context.IdProduct))'>ลบ</button>
+        </div>
+    </GridColumn>
+</Grid>
+
 @code {
     [Parameter]
     public EventCallback<bool> DataIsUpdate { get; set; }
 
     [CascadingParameter(Name = "ProductContent")]
-    private IEnumerable<ProductLocationItemInnerJoin> Products { get; set; } = null!;
+    public IEnumerable<ProductLocationItemInnerJoin> Products { get; set; } = null!;
 
     [Inject]
     protected IProduct ProductService { get; set; }
@@ -57,5 +47,10 @@
         status = await ProductService.DeleteProduct(id);
         if (status == true) { await DataIsUpdate.InvokeAsync(true); Message = "ตำแหน่งที่ตั้งถูกลบเรียบร้อยแล้ว"; }
         else { Message = "เกิดข้อผิดพลาดไม่สามารถลบได้"; }
+    }
+
+    private async Task<GridDataProviderResult<ProductLocationItemInnerJoin>> ProductDataProvider(GridDataProviderRequest<ProductLocationItemInnerJoin> request)
+    {
+        return await Task.FromResult(request.ApplyTo(Products));
     }
 }
