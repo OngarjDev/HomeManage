@@ -4,33 +4,33 @@
 @inject NavigationManager Navigation
 <h3>จัดการสินค้าทั้งหมด</h3>
 <label for="SearchProduct">ค้นหาสินค้าทั้งหมด (หากต้องการค้นหาวันที่ ปีคศ-เดือน-วันที่ 2023-04-26)</label><br />
-<input class="border border-warning border-2 rounded p-3 w-25" type="search" placeholder="ค้นหา : เลขไอดี ชื่อสินค้า" id="SearchProduct" @bind-value="KeywordSearch" style="height:35px" />
+<input class="border border-warning border-2 rounded p-3 w-25" type="text" placeholder="ค้นหา : เลขไอดี ชื่อสินค้า ชื่อทีจัดเก็บสินค้า(ใช้ ID ค้นหา)" id="SearchProduct" @bind-value="KeywordSearch" style="height:35px" />
 <button class="btn btn-primary text-white" @onclick="SearchLocationItem">ค้นหาตำแหน่งที่เก็บ</button>
 <button class="btn btn-success" @onclick="@(()=> Navigation.NavigateTo("/ProductAdd"))">เพิ่มตำแหน่งที่เก็บของ</button>
 <div class="mt-3">
-@*    <CascadingValue Value="@Product" Name="ProductContent">
-        <TableShowProductComponent DataIsUpdate="@UpdateDataNew" />
-    </CascadingValue>*@
+    <CascadingValue Value="@ProductLocationItemInnerJoin" Name="ProductContent">
+        <TableProductComponent DataIsUpdate="@UpdateDataNew" />
+    </CascadingValue>
 </div>
 @code {
     [Inject]
     protected IProduct ProductService { get; set; }
-    private List<Product> Product { get; set; } = new List<Product>();
+    private IEnumerable<ProductLocationItemInnerJoin> ProductLocationItemInnerJoin { get; set; } = new List<ProductLocationItemInnerJoin>();
     private String KeywordSearch { get; set; } = null;
     protected override async Task OnInitializedAsync()
     {
-        Product = await ProductService.GetDataListProduct();
+        ProductLocationItemInnerJoin = await ProductService.JoinLocationitemTableGetAll();
     }
 
     private async Task SearchLocationItem()
     {
-        Product = await ProductService.SearchProduct(KeywordSearch);
+        ProductLocationItemInnerJoin = await ProductService.SearchProduct(KeywordSearch);
     }
     private async Task UpdateDataNew(bool status)
     {
         if (status == true)
         {
-            Product = await ProductService.GetDataListProduct();
+            ProductLocationItemInnerJoin = await ProductService.JoinLocationitemTableGetAll();
             status = false;
         }
     }

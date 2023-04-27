@@ -11,11 +11,6 @@ namespace InsureManage.Interfaces
         /// <returns>หากเป็นจริงข้อมูลถูกบันทึกแล้ว หากไม่เป็นจริงมีปัญหาในการส่งข้อมูลไปยัง Database</returns>
         Task<bool> AddProduct(Product product);
         /// <summary>
-        /// ดึงข้อมูลสินค้าทั้งหมดออกมาทั้งหมด
-        /// </summary>
-        /// <returns>ข้อมูลสินค้าทั้งหมดที่อยู่ในฐานข้อมูลออกมา</returns>
-        Task<List<Product>> GetDataListProduct();
-        /// <summary>
         /// แก้ไขข้อมูล ProductService 
         /// </summary>
         /// <param name="product"></param>
@@ -31,7 +26,12 @@ namespace InsureManage.Interfaces
         /// ค้นหาข้อมูลที่เกี่ยวข้องทั้งหมดแล้วส่งข้อมูลที่เกี่ยวข้องกลับมา
         /// </summary>
         /// <param name="KeywordSearch">รับ KeywordSearch ที่มีข้อมูลที่เกี่ยวข้องเพื่อค้นหา</param>
-        /// <returns>ส่งข้อมูลที่มีความเกี่ยวข้องทั้งหมด</returns>
-        Task<List<Product>> SearchProduct(string KeywordSearch);
+        /// <returns>ส่งข้อมูลที่มีความเกี่ยวข้องทั้งหมด จะส่งเป็น InnerJoin ที่รวมLocationitem ด้วย</returns>
+        Task<IEnumerable<ProductLocationItemInnerJoin>> SearchProduct(string KeywordSearch);
+        /// <summary>
+        /// สำหรับการดึงข้อมูลสินค้าทั้งหมด รวมถึงข้อมูลที่เกี่ยวของกับ Locationitem ด้วยดึงเพียงรอบเดียว
+        /// </summary>
+        /// <returns>ข้อมูลที่เกียวข้องกับ Product และ Locationitem ทั้งหมด</returns>
+        Task<IEnumerable<ProductLocationItemInnerJoin>> JoinLocationitemTableGetAll();
     }
 }

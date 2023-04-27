@@ -28,11 +28,6 @@ namespace InsureManage.Services
             }
         }
 
-        public async Task<List<Product>> GetDataListProduct()
-        {
-            return await _db.Products.ToListAsync();
-        }
-
         public async Task<bool> UpdateProduct(Product product)
         {
             try
@@ -72,16 +67,46 @@ namespace InsureManage.Services
             }
         }
 
-        public async Task<List<Product>> SearchProduct(string KeywordSearch)
+        public async Task<IEnumerable<ProductLocationItemInnerJoin>> SearchProduct(string KeywordSearch)
         {
             int.TryParse(KeywordSearch, out int IdPosition);
             DateTime.TryParse(KeywordSearch, out DateTime DatePosition);
-            return await _db.Products.Where(p =>
-            p.IdProduct == IdPosition ||
-            p.NameProduct.Contains(KeywordSearch) ||
-            p.DateBuyProduct == DatePosition ||
-            p.DateEndInsureProduct == DatePosition
-            ).ToListAsync();
+            var query = from Product in _db.Set<Product>().Where(p =>
+                p.IdProduct == IdPosition ||
+                p.NameProduct.Contains(KeywordSearch) ||
+                p.DateBuyProduct == DatePosition ||
+                p.DateEndInsureProduct == DatePosition ||
+                p.PositionProduct == IdPosition
+            )
+                        join LocationItem in _db.Set<LocationItem>()
+                            on Product.PositionProduct equals LocationItem.IdLocationItem
+                        select new ProductLocationItemInnerJoin
+                        {
+                            IdProduct = Product.IdProduct,
+                            NameProduct = Product.NameProduct,
+                            DateBuyProduct = DateOnly.FromDateTime(Product.DateBuyProduct.GetValueOrDefault()),
+                            DateEndProduct = DateOnly.FromDateTime(Product.DateEndInsureProduct.GetValueOrDefault()),
+                            NoteProduct = Product.NoteProduct ?? string.Empty,
+                            NameLocationItem = LocationItem.NameLocationItem + " (ID : " + LocationItem.IdLocationItem + ")"
+                        };
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<ProductLocationItemInnerJoin>> JoinLocationitemTableGetAll()
+        {
+            var query = from Product in _db.Set<Product>()
+                        join LocationItem in _db.Set<LocationItem>()
+                            on Product.PositionProduct equals LocationItem.IdLocationItem
+                        select new ProductLocationItemInnerJoin
+                        {
+                            IdProduct = Product.IdProduct,
+                            NameProduct = Product.NameProduct,
+                            DateBuyProduct = DateOnly.FromDateTime(Product.DateBuyProduct.GetValueOrDefault()),
+                            DateEndProduct = DateOnly.FromDateTime(Product.DateEndInsureProduct.GetValueOrDefault()),
+                            NoteProduct = Product.NoteProduct ?? string.Empty,
+                            NameLocationItem = LocationItem.NameLocationItem + " (ID : " + LocationItem.IdLocationItem + ")"
+                        };
+            return await query.ToListAsync();
         }
     }
 }

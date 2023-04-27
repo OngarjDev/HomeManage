@@ -1,0 +1,59 @@
+﻿@using InsureManage.Interfaces;
+@using InsureManage.Models;
+@inject NavigationManager Navigation
+@if (Message != null)
+{
+    <p class="text-left mb-1">ข้อความแจ้งสถานะ : @Message</p>
+}
+<table class="table table-info table-striped text-center">
+    <thead>
+        <tr class="table-primary fs-4">
+            <th>ไอดี</th>
+            <th>ชื่อตำแหน่งที่เก็บของ</th>
+            <th>ชื่อที่จัดเก็บของ</th>
+            <th>วันที่ซื้อ</th>
+            <th>วันที่หมดประกัน</th>
+            <th>หมายเหตุ</th>
+            <th>จัดการ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Products)
+        {
+            <tr class="fs-5">
+                <td>@v.IdProduct</td>
+                <td>@v.NameProduct</td>
+                <td>@v.NameLocationItem</td>
+                <td>@v.DateBuyProduct</td>
+                <td>@v.DateEndProduct</td>
+                <td>@v.NoteProduct</td>
+                <td>
+                    <div class="btn-group w-100" role="group" aria-label="Basic mixed styles example">
+                        <button type="button" class="btn btn-warning" @onclick='@(() => Navigation.NavigateTo("/Product/Update/"+ v.IdProduct))'>แก้ไข</button>
+                        <button type="button" class="btn btn-danger" @onclick='@(async () => await DeleteData(v.IdProduct))'>ลบ</button>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+    [Parameter]
+    public EventCallback<bool> DataIsUpdate { get; set; }
+
+    [CascadingParameter(Name = "ProductContent")]
+    private IEnumerable<ProductLocationItemInnerJoin> Products { get; set; } = null!;
+
+    [Inject]
+    protected IProduct ProductService { get; set; }
+
+    private string Message { get; set; } = null;
+
+    private async Task DeleteData(int id)
+    {
+        bool status;
+        status = await ProductService.DeleteProduct(id);
+        if (status == true) { await DataIsUpdate.InvokeAsync(true); Message = "ตำแหน่งที่ตั้งถูกลบเรียบร้อยแล้ว"; }
+        else { Message = "เกิดข้อผิดพลาดไม่สามารถลบได้"; }
+    }
+}
