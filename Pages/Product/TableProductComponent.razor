@@ -3,7 +3,7 @@
 @inject NavigationManager Navigation
 
 <Grid TItem="ProductLocationItemInnerJoin" class="table table-hover table-bordered table-striped text-center" DataProvider="ProductDataProvider" AllowFiltering="true" AllowPaging="true" PageSize="20" AllowSorting="true" Responsive="true" EmptyText="ขออภัย เราไม่พบข้อมูลที่ท่านต้องการ">
-    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="ไอดี" PropertyName="IdProduct" SortString="IdProduct" SortKeySelector="item => item.IdProduct" FilterTextboxWidth="50" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
+    <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="ไอดี" PropertyName="IdProduct" SortString="IdProduct" SortKeySelector="item => item.IdProduct" FilterTextboxWidth="80" HeaderTextAlignment="Alignment.Center" TextAlignment="Alignment.Center">
         @context.IdProduct
     </GridColumn>
     <GridColumn TItem="ProductLocationItemInnerJoin" HeaderText="ชื่อตำแหน่งที่เก็บของ" PropertyName="NameProduct" SortString="NameProduct" SortKeySelector="item => item.NameProduct" FilterTextboxWidth="100">

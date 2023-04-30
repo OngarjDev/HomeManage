@@ -1,9 +1,146 @@
 ﻿@page "/"
+@using BlazorBootstrap.Extensions
+@using Color = System.Drawing.Color
+@using InsureManage.Models
+@using Microsoft.EntityFrameworkCore;
+@inject NavigationManager Navigation
+@inject InsureManageContext _dbcontext
+<h1>ภาพรวมทั้งหมด</h1>
+<div class="container-fulid">
+    <div class="row">
+        <div class="col-xxl-5">
+            <DoughnutChart @ref="doughnutChart" Width="550" Class="overflow-scroll" />
+        </div>
+        <div class="col-xxl-7">
+            <table class="table table-info table-bordered  table-striped text-center">
+                <thead>
+                    <tr class="table-primary fs-4">
+                        <th>ชื่อสถิติ</th>
+                        <th>จำนวน</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ยอดสินค้าที่มีอยู่ในระบบ</td>
+                        <td>@(_dbcontext.Products.Count())</td>
+                    </tr>
+                    <tr>
+                        <td>ยอดที่เก็บของที่มีอยู่ในระบบ</td>
+                        <td>@(_dbcontext.LocationItems.Count())</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
-<PageTitle>Index</PageTitle>
+<h1 class="text-center mb-3">ช่วยเหลือ</h1>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="/image/DocumentLogo.png" class="img-fluid ms-5" width="150">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">คู่มือสำหรับผู้ใช้งาน</h5>
+                            <p class="card-text">คู่มือในการใช้งานจะบอกวิธีการใช้งานเบื้องต้น.วิธีการแก้ไขปัญหาเบื้องต้น.คุณสมบัติและความสามารถของระบบ.</p>
+                            <Button Class="btn btn-primary w-100">คลิกที่นี่เพื่อดูคู่มือ</Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="/image/GithubLogo.png" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">คู่มือสำหรับผู้พัฒนาระบบ</h5>
+                            <p class="card-text">คู่มือสำหรับผู้พัฒนาจะบอกโครงสร้างของระบบ.บอกคำอธิบายแต่ละServiceที่เกี่ยวข้องกับระบบ.บอกเหตุผลของการเลือกใช้ระบบ.</p>
+                            <Button Class="btn btn-primary w-100" @onclick='@(() => Navigation.NavigateTo("https://github.com/OngarjDev/InsureManage"))'>คลิกที่นี่เพื่อไปยังGithub</Button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@code {
+    private DoughnutChart doughnutChart;
 
-<h1>Hello, world!</h1>
+    private ChartData chartData;
+    private DoughnutChartOptions chartOptions;
+    private List<string> backgroundColors;
+    private List<IChartDataset> DataSetDb { get; set; } = new List<IChartDataset>();
 
-Welcome to your new app.
+    Random random = new Random();
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    protected async override void OnInitialized()
+    {
+        // prepare background colors
+        PrepareBackgroundColors();
+
+        chartData = new ChartData
+            {
+                Labels = new List<string> { "สินค้าที่ยังมีประกัน", "สินค้าที่หมดประกัน" },
+                Datasets = new List<IChartDataset>()
+            };
+
+        chartData.Datasets.Add(GetDataSetDoughnutChart());
+
+        chartOptions = new DoughnutChartOptions
+            {
+                Responsive = true,
+            };
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await doughnutChart.InitializeAsync(chartData, chartOptions);
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task AddDataAsync()
+    {
+        if (chartData is null || chartData.Datasets is null) return;
+
+        chartData.Datasets.Add(GetDataSetDoughnutChart());
+        await doughnutChart.UpdateAsync(chartData, chartOptions);
+    }
+
+    private DoughnutChartDataset GetDataSetDoughnutChart()
+    {
+        return new DoughnutChartDataset()
+            {
+                Data = new List<double>
+            {
+                _dbcontext.Products.Where(p => p.DateEndInsureProduct > DateTime.Today).Count(),
+                _dbcontext.Products.Where(p => p.DateEndInsureProduct < DateTime.Today).Count(),
+            },
+                BackgroundColor = new List<string>
+            {
+                backgroundColors[0],
+                backgroundColors[1],
+            },
+            };
+    }
+
+    private void PrepareBackgroundColors()
+    {
+        if (backgroundColors is null)
+        {
+            backgroundColors = new List<string>();
+            backgroundColors.Add(Color.FromArgb(68, 153, 171).ToRgbString());
+            backgroundColors.Add(Color.FromArgb(134, 185, 216).ToRgbString());
+        }
+    }
+}
