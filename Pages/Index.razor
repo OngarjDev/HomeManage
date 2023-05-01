@@ -5,6 +5,7 @@
 @using Microsoft.EntityFrameworkCore;
 @inject NavigationManager Navigation
 @inject InsureManageContext _dbcontext
+@inject IJSRuntime JS
 <h1>ภาพรวมทั้งหมด</h1>
 <div class="container-fulid">
     <div class="row">
@@ -129,6 +130,8 @@
         if (firstRender)
         {
             await doughnutChart.InitializeAsync(chartData, chartOptions);
+            int Width = await JS.InvokeAsync<int>("WindowWidth");
+            await OnWindowResize(Width);
         }
         await base.OnAfterRenderAsync(firstRender);
     }
