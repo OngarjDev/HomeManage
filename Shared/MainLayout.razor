@@ -1,38 +1,50 @@
 ﻿@inherits LayoutComponentBase
 
 <PageTitle>InsureManage</PageTitle>
-<div class="container-fluid">
-    <div class="row flex-nowrap">
-        <div class=" col-xl-2 col-xxl-2 p-0">
-            <div class="bg-primary">
-                <Tooltip Title="คลิก. เพื่อไปยังหน้าภาพรวม" Placement="TooltipPlacement.Bottom">
-                <a href="/" class="d-flex align-items-center py-2 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <h3 class="mt-2 mx-auto">จัดการภายในบ้าน <Badge Color="BadgeColor.Success">1.0.1V</Badge> </h3>
-                </a>
-                </Tooltip>
-            </div>
-            <div class="d-flex flex-column bg-primary align-items-start  pt-2 text-white min-vh-100 flex-grow-1 p-3" style="opacity:90%">
-                <NavLink href="/Product" class="btn btn-primary w-100 mt-2 p-2">
-                    <h4 class="text-white text-center">จัดการสินค้า</h4>
-                </NavLink>
-                <NavLink href="/Position" class="btn btn-primary w-100 mt-2 p-2">
-                    <h4 class="text-white text-center">ที่จัดเก็บของ</h4>
-                </NavLink>
-            </div>
+
+<div class="bb-page">
+    <Sidebar @ref="sidebar"
+             IconName="IconName.HouseFill"
+             Title="จัดการภายในบ้าน"
+             BadgeText="1.0.1V"
+             DataProvider="SidebarDataProvider" />
+    <main>
+        <div class="bb-top-row px-4 d-flex justify-content-end">
+            <LoginDisplay />
         </div>
-        <div class="col-xxl-10 max-width-100 p-0">
-            <div class="bg-light bg-opacity-75 py-3 w-100">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="d-flex flex-row justify-content-end">
-                            <LoginDisplay />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="px-3 mt-3">
-            @Body
-            </div>
-        </div>
-    </div>
+        <article class="content px-4">
+            <div class="py-2">@Body</div>
+        </article>
+    </main>
 </div>
+@code {
+    Sidebar sidebar;
+    bool applyPurpleStyle = false;
+    IEnumerable<NavItem> navItems;
+    private async Task<SidebarDataProviderResult> SidebarDataProvider(SidebarDataProviderRequest request)
+    {
+        if (navItems is null)
+            navItems = GetNavItems();
+        return await Task.FromResult(request.ApplyTo(navItems));
+    }
+    private IEnumerable<NavItem> GetNavItems()
+    {
+        navItems = new List<NavItem>
+        {
+            new NavItem { Id = "2", IconName = IconName.BoxSeamFill, Text = "สินค้า", IconColor = IconColor.Primary },
+            new NavItem { Id = "3", IconName = IconName.Clipboard2PulseFill, Href = "/Product", Text = "ดูสินค้าที่ถูกบันทึก", ParentId="2"},
+            new NavItem { Id = "4", IconName = IconName.Clipboard2PlusFill, Href = "/ProductAdd", Text = "เพิ่มสินค้า", ParentId="2"},
+            new NavItem { Id = "5", IconName = IconName.InboxesFill, Text = "ที่จัดเก็บ", IconColor = IconColor.Success },
+            new NavItem { Id = "6", IconName = IconName.Clipboard2PulseFill, Href = "/Position", Text = "ดูที่จัดเก็บที่ถูกบันทึก", ParentId="5"},
+            new NavItem { Id = "7", IconName = IconName.Clipboard2PlusFill, Href = "/PositionAdd", Text = "เพิ่มที่จัดเก็บ", ParentId="5"},
+
+        };
+        return navItems;
+    }
+}
+<style>
+    :root {
+        --bb-sidebar-background-color: #ECF2FF;
+        --bb-sidebar-top-row-background-color: #655DBB;
+    }
+</style>

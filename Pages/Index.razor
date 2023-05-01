@@ -8,11 +8,13 @@
 <h1>ภาพรวมทั้งหมด</h1>
 <div class="container-fulid">
     <div class="row">
-        <div class="col-xxl-5">
-            <DoughnutChart @ref="doughnutChart" Width="550" Class="overflow-scroll" />
+        <div class="col-xxl-5 col-xl-6 col-lg-12 col-md-12 col-sm-12 ">
+            <div class="d-flex justify-content-center">
+            <DoughnutChart @ref="doughnutChart" Width="@WidthDoughnutChart" />
+            </div>
         </div>
-        <div class="col-xxl-7">
-            <table class="table table-info table-bordered  table-striped text-center">
+        <div class="col-xxl-7 col-xl-6 col-lg-12 col-md-12 col-sm-12">
+            <table class="table table-info table-bordered  table-striped text-center mt-4">
                 <thead>
                     <tr class="table-primary fs-4">
                         <th>ชื่อสถิติ</th>
@@ -36,12 +38,14 @@
 
 <h1 class="text-center mb-3">ช่วยเหลือ</h1>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col">
+    <div class="row justify-content-center gy-3">
+        <div class="col-12 col-xxl-6 col-lg-12 col-sm-12">
             <div class="card">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="/image/DocumentLogo.png" class="img-fluid ms-5" width="150">
+                        <div class="d-flex justify-content-center">
+                        <img src="/image/DocumentLogo.png" class="img-fluid" width="150">
+                        </div>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -53,11 +57,13 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-12 col-xxl-6 col-lg-12 col-sm-12">
             <div class="card">
                 <div class="row g-0">
                     <div class="col-md-4">
+                        <div class="d-flex justify-content-center">
                         <img src="/image/GithubLogo.png" class="img-fluid">
+                        </div>
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
@@ -72,14 +78,32 @@
     </div>
 </div>
 @code {
-    private DoughnutChart doughnutChart;
+    private static DoughnutChart doughnutChart;
 
     private ChartData chartData;
     private DoughnutChartOptions chartOptions;
     private List<string> backgroundColors;
     private List<IChartDataset> DataSetDb { get; set; } = new List<IChartDataset>();
-
+    private static int WidthDoughnutChart { get; set; } = 0;
     Random random = new Random();
+
+    /// <summary>
+    /// ทำให้ DoughnutChart Responsive ได้
+    /// </summary>
+    /// <param name="width">ค่าความกว้างของหน้าจอ</param>
+    /// <returns>จะส่งค่าWidth ไปยัง DoughnutChart เป็นขนาดที่เหมาะสมในแต่ละหน้าจอ</returns>
+    [JSInvokable]
+    public static Task OnWindowResize(int width)
+    {
+        if (width >= 1400) WidthDoughnutChart = 550;
+        else if (width >= 1200) WidthDoughnutChart = 450;
+        else if (width >= 992) WidthDoughnutChart = 450;
+        else if (width >= 768) WidthDoughnutChart = 450;
+        else if (width >= 576) WidthDoughnutChart = 500;
+        else if (width < 576) WidthDoughnutChart = 280;
+        else WidthDoughnutChart = 550;
+        return Task.CompletedTask;
+    }
 
     protected async override void OnInitialized()
     {
