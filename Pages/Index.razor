@@ -52,7 +52,7 @@
                         <div class="card-body">
                             <h5 class="card-title">คู่มือสำหรับผู้ใช้งาน</h5>
                             <p class="card-text">คู่มือในการใช้งานจะบอกวิธีการใช้งานเบื้องต้น.วิธีการแก้ไขปัญหาเบื้องต้น.คุณสมบัติและความสามารถของระบบ.</p>
-                            <Button Class="btn btn-primary w-100" @onclick='@(() => Navigation.NavigateTo("/Document/DocumentUser.pdf"))'>คลิกที่นี่เพื่อดูคู่มือ</Button>
+                            <Button Class="btn btn-primary w-100">คลิกที่นี่เพื่อดูคู่มือ</Button>
                         </div>
                     </div>
                 </div>
@@ -106,7 +106,7 @@
         return Task.CompletedTask;
     }
 
-    protected override void OnInitialized()
+    protected async override void OnInitialized()
     {
         // prepare background colors
         PrepareBackgroundColors();
