@@ -6,6 +6,7 @@ using InsureManage.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Syncfusion.Blazor;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,9 @@ builder.Services.AddScoped<ILocationitem, LocationItemService>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+// Add Syncfusion Blazor service to the container.
+builder.Services.AddSyncfusionBlazor();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
