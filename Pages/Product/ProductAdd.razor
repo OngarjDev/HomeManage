@@ -28,13 +28,11 @@
             }
         }
     </InputSelect>
-    <div class="input-group mt-3">
     <label class="form-label mt-1" for="DateBuyProduct">วันที่ซื้อ</label>
-    <InputDate class="form-control mx-3" id="DateBuyProduct" @bind-Value="product.DateBuyProduct" />
+    <InputDate class="form-control" id="DateBuyProduct" @bind-Value="product.DateBuyProduct" />
 
     <label class="form-label mt-2" for="DateEndInsureProduct">วันที่หมดประกัน</label>
-    <InputDate class="form-control ms-3" id="DateEndInsureProduct" @bind-Value="product.DateEndInsureProduct" />
-    </div>
+    <InputDate class="form-control" id="DateEndInsureProduct" @bind-Value="product.DateEndInsureProduct" />
 
     <label class="form-label mt-1" for="nameproduct">หมายเหตุ(เช่น เก็บซิลิโคน ที่ต่อGoPro)</label>
     <InputTextArea class="form-control" id="note" @bind-Value="product.NoteProduct" />
