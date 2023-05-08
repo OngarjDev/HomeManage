@@ -6,9 +6,9 @@
 เพื่อเป็นประโยชน์แก่ผู้ที่ใช้งาน Blazor Server ในการศึกษาโครงสร้างภายในเบื้องต้น
 
 ### ข้อมูลระบบเบื้องต้น
-	1. สร้างด้วย Blazor Server .NetCore 6.0
-	2. Blazor.Bootstrap 5 สำหรับ Ux/Ui Responsive รองรับทุกขนาดหน้าจอ
-	3. EFcore SqlServer สำหรับติดต่อกับฐานข้อมูล
+    1. สร้างด้วย Blazor Server .NetCore 6.0
+    2. Blazor.Bootstrap 5 สำหรับ Ux/Ui Responsive รองรับทุกขนาดหน้าจอ
+    3. EFcore SqlServer สำหรับติดต่อกับฐานข้อมูล
 
 ### คู่มือการติดตั้งสำหรับผู้พัฒนา
 ในคู่มือนี้เราจะใช้ IIS (Internate Information Service) สำหรับการHosting ใช้ภายในบ้าน โดยจะต้องมีสิทธิ
